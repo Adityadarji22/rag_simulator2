@@ -1,1 +1,685 @@
-<h1>this is my Idex page</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RAG Simulator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --bg:#050816;
+    --card:#0f172a;
+    --card2:#111c35;
+    --border:rgba(255,255,255,0.08);
+    --text:#f8fafc;
+    --muted:#94a3b8;
+    --primary:#38bdf8;
+    --secondary:#8b5cf6;
+    --success:#22c55e;
+    --danger:#ef4444;
+}
+
+body{
+    font-family:Inter,sans-serif;
+    background:
+    radial-gradient(circle at top right, rgba(56,189,248,0.15), transparent 30%),
+    radial-gradient(circle at bottom left, rgba(139,92,246,0.15), transparent 30%),
+    var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size:40px 40px;
+    pointer-events:none;
+    z-index:-1;
+}
+
+.container{
+    width:min(1500px,95%);
+    margin:auto;
+    padding:40px 0 100px;
+}
+
+.hero{
+    margin-bottom:40px;
+}
+
+.badge{
+    display:inline-flex;
+    padding:10px 18px;
+    border-radius:999px;
+    background:rgba(56,189,248,0.1);
+    border:1px solid rgba(56,189,248,0.3);
+    color:var(--primary);
+    font-size:13px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-bottom:20px;
+}
+
+h1{
+    font-size:clamp(42px,6vw,90px);
+    line-height:1;
+    margin-bottom:20px;
+}
+
+.gradient{
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+    max-width:900px;
+    color:var(--muted);
+    font-size:20px;
+    line-height:1.8;
+}
+
+.main-grid{
+    display:grid;
+    grid-template-columns:380px 1fr;
+    gap:24px;
+}
+
+.card{
+    background:rgba(15,23,42,0.75);
+    border:1px solid var(--border);
+    backdrop-filter:blur(20px);
+    border-radius:28px;
+    padding:24px;
+    position:relative;
+    overflow:hidden;
+}
+
+.card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        130deg,
+        rgba(255,255,255,0.04),
+        transparent 30%
+    );
+    pointer-events:none;
+}
+
+.sidebar{
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+}
+
+.section-title{
+    font-size:22px;
+    margin-bottom:20px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.section-title::before{
+    content:'';
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
+}
+
+textarea{
+    width:100%;
+    height:200px;
+    resize:none;
+    border:none;
+    outline:none;
+    border-radius:18px;
+    background:#020617;
+    color:white;
+    padding:18px;
+    font-size:15px;
+    line-height:1.7;
+    border:1px solid rgba(255,255,255,0.06);
+}
+
+.input{
+    width:100%;
+    border:none;
+    outline:none;
+    border-radius:16px;
+    background:#020617;
+    color:white;
+    padding:16px;
+    font-size:15px;
+    border:1px solid rgba(255,255,255,0.06);
+}
+
+button{
+    width:100%;
+    border:none;
+    cursor:pointer;
+    padding:18px;
+    border-radius:18px;
+    margin-top:16px;
+    font-size:16px;
+    font-weight:700;
+    color:white;
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
+    transition:0.3s;
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 20px 30px rgba(56,189,248,0.2);
+}
+
+.pipeline{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+}
+
+.step{
+    border-radius:24px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.06);
+    overflow:hidden;
+    transition:0.4s;
+    opacity:0.4;
+    transform:scale(0.98);
+}
+
+.step.active{
+    opacity:1;
+    transform:scale(1);
+    border-color:rgba(56,189,248,0.4);
+    box-shadow:0 0 40px rgba(56,189,248,0.08);
+}
+
+.step-header{
+    padding:20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.step-left{
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+
+.step-number{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
+    font-weight:700;
+}
+
+.step-title{
+    font-size:20px;
+    font-weight:700;
+}
+
+.step-desc{
+    color:var(--muted);
+    margin-top:4px;
+}
+
+.step-content{
+    padding:0 20px 20px;
+}
+
+.chunk{
+    background:#020617;
+    border:1px solid rgba(255,255,255,0.05);
+    padding:14px;
+    border-radius:16px;
+    margin-bottom:12px;
+    transition:0.3s;
+}
+
+.chunk.highlight{
+    border-color:var(--success);
+    background:rgba(34,197,94,0.08);
+}
+
+.embedding{
+    display:flex;
+    gap:6px;
+    margin-top:10px;
+    flex-wrap:wrap;
+}
+
+.bar{
+    width:18px;
+    border-radius:999px;
+    background:linear-gradient(
+        180deg,
+        var(--primary),
+        var(--secondary)
+    );
+    animation:grow 1s ease;
+}
+
+@keyframes grow{
+    from{
+        height:0;
+    }
+}
+
+.arrow{
+    text-align:center;
+    font-size:28px;
+    color:var(--primary);
+    animation:bounce 1.5s infinite;
+}
+
+@keyframes bounce{
+    50%{
+        transform:translateY(8px);
+    }
+}
+
+.llm-box{
+    background:linear-gradient(
+        135deg,
+        rgba(56,189,248,0.1),
+        rgba(139,92,246,0.1)
+    );
+    border:1px solid rgba(56,189,248,0.3);
+    border-radius:24px;
+    padding:24px;
+}
+
+.response{
+    margin-top:16px;
+    line-height:1.9;
+    color:#dbeafe;
+}
+
+.floating{
+    position:fixed;
+    width:400px;
+    height:400px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(56,189,248,0.08), transparent 70%);
+    filter:blur(40px);
+    z-index:-1;
+}
+
+.float1{
+    top:-100px;
+    right:-100px;
+}
+
+.float2{
+    bottom:-100px;
+    left:-100px;
+}
+
+@media(max-width:1100px){
+
+    .main-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="floating float1"></div>
+<div class="floating float2"></div>
+
+<div class="container">
+
+    <section class="hero">
+        <div class="badge">Interactive RAG Simulator</div>
+
+        <h1>
+            Understand <span class="gradient">RAG</span><br>
+            Visually
+        </h1>
+
+        <p class="subtitle">
+            Simulates Retrieval-Augmented Generation step-by-step:
+            chunking → embeddings → vector search → retrieval → LLM response.
+            Humanity somehow invented probabilistic autocomplete and now calls it intelligence. Still... pretty cool.
+        </p>
+    </section>
+
+    <section class="main-grid">
+
+        <div class="sidebar">
+
+            <div class="card">
+                <div class="section-title">Knowledge Base</div>
+
+<textarea id="documents">
+RAG stands for Retrieval Augmented Generation.
+
+Embeddings convert text into numerical vector representations.
+
+Vector databases store embeddings for semantic similarity search.
+
+Chunking splits large documents into smaller meaningful pieces.
+
+Cosine similarity is used to compare embeddings.
+
+LLMs use retrieved chunks as external context to reduce hallucinations.
+
+Hybrid search combines keyword search and vector search.
+
+Good chunking improves retrieval quality significantly.
+</textarea>
+
+            </div>
+
+            <div class="card">
+                <div class="section-title">Ask Question</div>
+
+                <input
+                    class="input"
+                    id="query"
+                    value="How does chunking improve RAG?"
+                />
+
+                <button onclick="runRAG()">
+                    Run RAG Pipeline
+                </button>
+            </div>
+
+        </div>
+
+        <div class="pipeline">
+
+            <div class="step" id="step1">
+                <div class="step-header">
+                    <div class="step-left">
+                        <div class="step-number">1</div>
+                        <div>
+                            <div class="step-title">Chunking</div>
+                            <div class="step-desc">
+                                Split documents into smaller chunks
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-content" id="chunks"></div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="step" id="step2">
+                <div class="step-header">
+                    <div class="step-left">
+                        <div class="step-number">2</div>
+                        <div>
+                            <div class="step-title">Embeddings</div>
+                            <div class="step-desc">
+                                Convert chunks into vectors
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-content" id="embeddings"></div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="step" id="step3">
+                <div class="step-header">
+                    <div class="step-left">
+                        <div class="step-number">3</div>
+                        <div>
+                            <div class="step-title">Vector Search</div>
+                            <div class="step-desc">
+                                Compare query embedding with chunk embeddings
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-content" id="search"></div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="step" id="step4">
+                <div class="step-header">
+                    <div class="step-left">
+                        <div class="step-number">4</div>
+                        <div>
+                            <div class="step-title">Retrieved Context</div>
+                            <div class="step-desc">
+                                Most relevant chunks selected
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-content" id="retrieved"></div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="step" id="step5">
+                <div class="step-header">
+                    <div class="step-left">
+                        <div class="step-number">5</div>
+                        <div>
+                            <div class="step-title">LLM Generation</div>
+                            <div class="step-desc">
+                                Retrieved context + query sent to LLM
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-content">
+
+                    <div class="llm-box">
+                        <strong>Prompt Sent To LLM:</strong>
+
+                        <div class="response" id="prompt"></div>
+
+                        <br>
+
+                        <strong>LLM Response:</strong>
+
+                        <div class="response" id="response"></div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+<script>
+
+const delay = ms => new Promise(r => setTimeout(r, ms));
+
+function fakeEmbedding(){
+    return Array.from(
+        {length:12},
+        () => Math.floor(Math.random()*80)+20
+    );
+}
+
+function similarity(text, query){
+
+    const a = text.toLowerCase().split(" ");
+    const b = query.toLowerCase().split(" ");
+
+    let score = 0;
+
+    b.forEach(word=>{
+        if(a.includes(word)){
+            score++;
+        }
+    });
+
+    return score;
+}
+
+async function activateStep(id){
+
+    document.getElementById(id).classList.add('active');
+
+    await delay(700);
+}
+
+async function runRAG(){
+
+    document.querySelectorAll('.step')
+    .forEach(s=>s.classList.remove('active'));
+
+    document.getElementById('chunks').innerHTML='';
+    document.getElementById('embeddings').innerHTML='';
+    document.getElementById('search').innerHTML='';
+    document.getElementById('retrieved').innerHTML='';
+    document.getElementById('prompt').innerHTML='';
+    document.getElementById('response').innerHTML='';
+
+    const docs = document
+        .getElementById('documents')
+        .value
+        .split('\n')
+        .filter(x=>x.trim());
+
+    const query = document
+        .getElementById('query')
+        .value;
+
+    await activateStep('step1');
+
+    docs.forEach((doc,i)=>{
+
+        document.getElementById('chunks').innerHTML += `
+            <div class="chunk">
+                <strong>Chunk ${i+1}</strong><br><br>
+                ${doc}
+            </div>
+        `;
+    });
+
+    await activateStep('step2');
+
+    const embeddings = [];
+
+    docs.forEach((doc,i)=>{
+
+        const vector = fakeEmbedding();
+
+        embeddings.push({
+            text:doc,
+            vector
+        });
+
+        document.getElementById('embeddings').innerHTML += `
+            <div class="chunk">
+                <strong>Chunk ${i+1} Embedding</strong>
+
+                <div class="embedding">
+                    ${
+                        vector.map(v=>`
+                            <div 
+                                class="bar"
+                                style="height:${v}px">
+                            </div>
+                        `).join('')
+                    }
+                </div>
+            </div>
+        `;
+    });
+
+    await activateStep('step3');
+
+    const scored = embeddings.map(e=>({
+        ...e,
+        score: similarity(e.text,query)
+    }));
+
+    scored.sort((a,b)=>b.score-a.score);
+
+    scored.forEach((s,i)=>{
+
+        document.getElementById('search').innerHTML += `
+            <div class="chunk ${i===0 ? 'highlight':''}">
+                <strong>Similarity Score: ${s.score}</strong>
+                <br><br>
+                ${s.text}
+            </div>
+        `;
+    });
+
+    await activateStep('step4');
+
+    const retrieved = scored.slice(0,2);
+
+    retrieved.forEach(r=>{
+
+        document.getElementById('retrieved').innerHTML += `
+            <div class="chunk highlight">
+                ${r.text}
+            </div>
+        `;
+    });
+
+    await activateStep('step5');
+
+    const context = retrieved
+        .map(r=>r.text)
+        .join('<br><br>');
+
+    document.getElementById('prompt').innerHTML = `
+        <strong>User Query:</strong><br>
+        ${query}
+        <br><br>
+        <strong>Retrieved Chunks:</strong><br><br>
+        ${context}
+    `;
+
+    await delay(1200);
+
+    document.getElementById('response').innerHTML = `
+        Based on the retrieved chunks, chunking improves RAG by splitting large documents into smaller meaningful sections. 
+        This improves retrieval accuracy because semantic search can fetch highly relevant context instead of entire documents.
+        Better chunking reduces noise and improves the quality of information sent to the LLM, helping reduce hallucinations.
+    `;
+}
+
+runRAG();
+
+</script>
+
+</body>
+</html>
