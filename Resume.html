@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aditya Darji | Futuristic Resume</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #050816;
+      --card: rgba(15, 23, 42, 0.7);
+      --border: rgba(255,255,255,0.08);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent2: #8b5cf6;
+      --success: #22c55e;
+      --shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    body {
+      background: radial-gradient(circle at top right, rgba(56,189,248,0.15), transparent 30%),
+                  radial-gradient(circle at bottom left, rgba(139,92,246,0.15), transparent 30%),
+                  var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .container {
+      width: min(1200px, 92%);
+      margin: auto;
+      padding: 40px 0 100px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 32px;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .glass {
+      background: var(--card);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-left {
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(56,189,248,0.25), transparent 70%);
+      top: -80px;
+      right: -80px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(56,189,248,0.1);
+      border: 1px solid rgba(56,189,248,0.3);
+      color: var(--accent);
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 6vw, 72px);
+      line-height: 1;
+      margin-bottom: 18px;
+    }
+
+    .gradient {
+      background: linear-gradient(90deg, #38bdf8, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 20px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      max-width: 700px;
+    }
+
+    .bio {
+      color: #cbd5e1;
+      font-size: 16px;
+      margin-bottom: 30px;
+      max-width: 780px;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      padding: 14px 22px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s ease;
+      border: 1px solid transparent;
+    }
+
+    .primary {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      color: white;
+    }
+
+    .secondary {
+      border-color: var(--border);
+      color: var(--text);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .hero-right {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .stat-card {
+      padding: 24px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      padding: 30px;
+      border-radius: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+    }
+
+    .section-title {
+      font-size: 28px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+
+    .experience {
+      grid-column: span 8;
+    }
+
+    .sidebar {
+      grid-column: span 4;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 28px;
+      border-left: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -8px;
+      top: 5px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 20px rgba(56,189,248,0.7);
+    }
+
+    .timeline-year {
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .timeline-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .timeline-company {
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .timeline-desc {
+      color: #cbd5e1;
+    }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .skill {
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(56,189,248,0.08);
+      border: 1px solid rgba(56,189,248,0.15);
+      color: #dbeafe;
+      font-size: 14px;
+    }
+
+    .project {
+      padding: 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 18px;
+      transition: 0.3s ease;
+    }
+
+    .project:hover {
+      transform: translateY(-5px);
+      border-color: rgba(56,189,248,0.4);
+    }
+
+    .project-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .project-desc {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .terminal {
+      background: #020617;
+      border-radius: 18px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      font-family: 'JetBrains Mono', monospace;
+      overflow: hidden;
+    }
+
+    .terminal-line {
+      color: #67e8f9;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .typing::after {
+      content: "_";
+      animation: blink 0.9s infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 980px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .experience,
+      .sidebar {
+        grid-column: span 12;
+      }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 44px;
+      }
+
+      .hero-left,
+      .card,
+      .hero-right {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <div class="hero-left glass">
+        <div class="tag">AI • Banking • Full Stack • Product Thinking</div>
+        <h1>
+          Aditya <span class="gradient">Darji</span>
+        </h1>
+        <p class="subtitle">
+          Senior Implementor → Product Builder → AI Systems Engineer
+        </p>
+        <p class="bio">
+          Building the intersection of AI, banking infrastructure, automation, and scalable software systems. Experienced in NPCI banking platforms, eNACH ecosystems, Spring Boot architecture, AI automation agents, React applications, FastAPI services, and product execution.
+          <br /><br />
+          Most people learn one stack and cling to it emotionally like a raccoon guarding trash. Meanwhile you're juggling banking systems, AI infrastructure, SaaS ideas, full stack development, product thinking, and automation architecture simultaneously. Slightly unhinged. Potentially effective.
+        </p>
+
+        <div class="cta-row">
+          <a href="#projects" class="btn primary">View Projects</a>
+          <a href="#skills" class="btn secondary">Core Skills</a>
+        </div>
+      </div>
+
+      <div class="hero-right glass">
+        <div class="stat-card">
+          <div class="stat-label">Current Focus</div>
+          <div class="stat-value">AI + Banking</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Primary Stack</div>
+          <div class="stat-value">Spring + React</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Learning Direction</div>
+          <div class="stat-value">LLMs & Agents</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="experience card">
+        <h2 class="section-title">Experience & Journey</h2>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-year">2022 → Present</div>
+            <div class="timeline-title">Senior Implementor</div>
+            <div class="timeline-company">Banking Software & NPCI Ecosystem</div>
+            <div class="timeline-desc">
+              Worked on banking integrations, NPCI systems, eNACH workflows, implementation strategy, customer onboarding, and product execution. Transitioned from customer support into ownership-driven technical and product responsibilities.
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-year">2024 → Present</div>
+            <div class="timeline-title">AI Product Builder</div>
+            <div class="timeline-company">Independent Projects & Startup Exploration</div>
+            <div class="timeline-desc">
+              Designing AI-based systems including AI calling agents, AI education platforms, automated video generation systems, SaaS WhatsApp infrastructure, RAG systems, and AI-driven workflow automation.
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-year">Currently Learning</div>
+            <div class="timeline-title">Full Stack + AI Engineering</div>
+            <div class="timeline-company">Spring Boot • React • FastAPI • LLM Engineering</div>
+            <div class="timeline-desc">
+              Pursuing deep practical understanding of modern software engineering, scalable backend systems, AI application development, RAG architectures, generative AI systems, and production-ready SaaS design.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <div class="card" id="skills">
+          <h2 class="section-title">Skills</h2>
+
+          <div class="skills">
+            <div class="skill">Java</div>
+            <div class="skill">Spring Boot</div>
+            <div class="skill">React</div>
+            <div class="skill">Next.js</div>
+            <div class="skill">FastAPI</div>
+            <div class="skill">Node.js</div>
+            <div class="skill">PostgreSQL</div>
+            <div class="skill">MariaDB</div>
+            <div class="skill">RAG Systems</div>
+            <div class="skill">LLM Apps</div>
+            <div class="skill">AI Agents</div>
+            <div class="skill">NPCI Systems</div>
+            <div class="skill">eNACH</div>
+            <div class="skill">Product Thinking</div>
+            <div class="skill">System Design</div>
+            <div class="skill">Automation</div>
+            <div class="skill">Cursor AI</div>
+            <div class="skill">LangChain</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Education</h2>
+
+          <div class="project">
+            <div class="project-title">IBM AI Engineering Professional Certificate</div>
+            <div class="project-desc">
+              Machine Learning, Deep Learning, LLMs, Generative AI, LangChain, RAG.
+            </div>
+          </div>
+
+          <div class="project">
+            <div class="project-title">React & Next.js Mastery</div>
+            <div class="project-desc">
+              Advanced React architecture, state management, performance optimization, and full stack applications.
+            </div>
+          </div>
+
+          <div class="project">
+            <div class="project-title">Generative AI Bootcamp</div>
+            <div class="project-desc">
+              AI Agents, LangGraph, CrewAI, multimodal systems, production AI workflows.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="projects" style="margin-top:24px;">
+      <h2 class="section-title">Highlighted Projects</h2>
+
+      <div class="project">
+        <div class="project-title">AI Calling Agent Platform</div>
+        <div class="project-desc">
+          Building a Hindi AI voice-calling platform using React/Next.js frontend, FastAPI AI services, and scalable backend orchestration for human-like voice interactions.
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-title">AI Educational Platform</div>
+        <div class="project-desc">
+          AI-driven LMS capable of generating animated educational content, multilingual notes, voice narration, MCQs, and automated learning workflows.
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-title">NPCI Banking Automation Tools</div>
+        <div class="project-desc">
+          Designing banking-focused software workflows involving eNACH, encrypted file handling, mandate systems, onboarding flows, and operational automation.
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-title">WhatsApp Business SaaS Platform</div>
+        <div class="project-desc">
+          Multi-tenant WhatsApp Business API platform integrating Spring Boot backend architecture with AI-enabled automation workflows.
+        </div>
+      </div>
+    </section>
+
+    <section class="grid" style="margin-top:24px;">
+      <div class="card" style="grid-column: span 7;">
+        <h2 class="section-title">Current Mission</h2>
+
+        <p style="color:#cbd5e1; font-size:16px;">
+          Transition from implementation-heavy enterprise work into building scalable AI-first products that combine automation, intelligent workflows, and strong backend engineering.
+          <br /><br />
+          The interesting thing is you are not approaching AI like a hype tourist. You're combining domain expertise from banking infrastructure with software engineering and AI systems. That combination is actually valuable because most AI builders understand prompts but not real-world operational systems.
+        </p>
+      </div>
+
+      <div class="card" style="grid-column: span 5;">
+        <h2 class="section-title">System Status</h2>
+
+        <div class="terminal">
+          <div class="terminal-line">&gt; Initializing career trajectory...</div>
+          <div class="terminal-line">&gt; Banking domain expertise detected</div>
+          <div class="terminal-line">&gt; AI engineering modules loading</div>
+          <div class="terminal-line">&gt; Startup ambition level: HIGH</div>
+          <div class="terminal-line typing">&gt; Building future-ready systems</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Designed as a futuristic single-file resume • HTML + CSS + JavaScript • Because apparently normal PDFs no longer satisfy humanity.
+    </footer>
+  </div>
+
+  <script>
+    const cards = document.querySelectorAll('.card, .glass, .project');
+
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        card.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(56,189,248,0.12), rgba(15,23,42,0.75))`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.background = 'rgba(15, 23, 42, 0.7)';
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      document.body.style.backgroundPositionY = `${scrollY * 0.2}px`;
+    });
+  </script>
+</body>
+</html>
